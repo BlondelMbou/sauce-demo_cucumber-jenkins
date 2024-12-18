@@ -1,13 +1,14 @@
 pipeline {
     agent {
-        docker {
-            image 'cypress/included:12.17.1' 
-                }
-
+        docker{
+            image 'cypress/browsers'
+        }
+    }
     stages {
         stage('Install Dependencies') {
             steps {
                 script {
+
                     sh 'npm ci'
                 }
             }
@@ -16,6 +17,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
+
                     sh 'npx cypress run'
                 }
             }
@@ -25,8 +27,22 @@ pipeline {
             steps {
                 script {
                     sh 'node cucumber-report-generator.js'
+
                 }
             }
+        }
+
+
+    }
+
+    post {
+        always {
+          script {
+            echo 'Les artifacts'
+
+            archiveArtifacts artifacts: '*/.reports', allowEmptyArchive: true
+
+          }
         }
     }
 }

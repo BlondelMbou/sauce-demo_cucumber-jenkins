@@ -8,6 +8,9 @@ pipeline {
     parameters {
         choice(name: 'TAGS', choices: ['regression', 'positive', 'negative'], description: 'choisir un TAG')
     }
+    triggers{
+        cron ('H/3 * * * *')
+    }
     
     stages {
         stage('Install Dependencies') {

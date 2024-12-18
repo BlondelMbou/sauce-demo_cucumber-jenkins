@@ -1,11 +1,12 @@
 pipeline {
-    parameters {
-        choice(name: 'TAGS', choices: ['regression', 'positive', 'negative'], description: 'choisir un TAG')
-    }
+    
     agent {
         docker{
             image 'cypress/browsers'
         }
+    }
+    parameters {
+        choice(name: 'TAGS', choices: ['@regression', '@positive', '@negative'], description: 'choisir un TAG')
     }
     
     stages {
@@ -22,7 +23,7 @@ pipeline {
             steps {
                 script {
 
-                    sh 'npx cypress run --env TAGS=@${params.TAGS}'
+                    sh 'npx cypress run --env TAGS=${params.TAGS}'
                 }
             }
         }

@@ -4,6 +4,9 @@ pipeline {
             image 'cypress/browsers'
         }
     }
+     parameters {
+        choice(name: 'CHOICE', choices: ['regression', 'positive', 'negative'], description: 'choisir un TAG')
+    }
     stages {
         stage('Install Dependencies') {
             steps {
@@ -18,7 +21,7 @@ pipeline {
             steps {
                 script {
 
-                    sh 'npx cypress run --env TAGS=@positive'
+                    sh 'npx cypress run --env TAGS=@${params.CHOICE}'
                 }
             }
         }
